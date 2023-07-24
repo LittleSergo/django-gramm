@@ -1,0 +1,51 @@
+.profile {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto;
+    grid-gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.username {
+    grid-row: 1;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    font-size: 25px;
+    margin-left: 22px;
+}
+
+.follow {
+    grid-row: 2;
+    grid-column: 2;
+}
+
+.profile_image {
+    grid-column: 1 / 2;
+    grid-row: 2;
+    width: 150px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user_info {
+    margin-top: 15px;
+    margin-right: 8px;
+    margin-left: 8px;
+    grid-row: 3;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    text-align: justify;
+}
+
+.edit {
+    width: 350px;
+}
+
+.edit a {
+    margin-left: auto;
+    margin-right: 8px;
+    text-align: right;
+}

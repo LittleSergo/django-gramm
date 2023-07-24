@@ -1,0 +1,9 @@
+.login {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-google-auth {
+    margin-top: 10px;
+}

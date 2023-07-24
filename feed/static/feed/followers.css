@@ -1,0 +1,9 @@
+.main {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+li:hover{
+    background-color: lightgray;
+}

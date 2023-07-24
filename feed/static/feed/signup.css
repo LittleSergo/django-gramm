@@ -1,0 +1,13 @@
+.signup {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signup p label {
+    display: block;
+}
+
+.helptext {
+    display: block;
+}

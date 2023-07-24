@@ -1,0 +1,68 @@
+.feed {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.comment.hidden {
+    display: none !important;
+}
+
+.expand-comments, .collapse-comments {
+    cursor: pointer;
+}
+
+.comment {
+    display: grid !important;
+    grid-template-columns: 5fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 0;
+}
+
+.comment-text {
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-column: 1;
+    margin-bottom: auto;
+    margin-top: auto;
+    text-align: justify;
+}
+
+.comment-posted {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 12px;
+    margin-right:0px;
+    margin-left: auto;
+}
+
+.comment-like {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 12px;
+    margin-right: 0px;
+    margin-left: auto;
+    margin-bottom: -8px;
+    margin-top: auto;
+}
+
+.comment-like-btn {
+    margin-bottom: 6px !important;
+    cursor: pointer;
+}
+
+.comment-input {
+    padding: 0px !important;
+    border: 0px transparent !important;
+}
+
+.form-control {
+    margin-left: 0px !important;
+    border-top: 0px transparent !important;
+    border-bottom-left-radius: 0.375rem !important;
+}
+
+.input-group .btn-outline-secondary {
+    margin-top: -1px !important;
+    border-top-right-radius: 0px !important;
+}

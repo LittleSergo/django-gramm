@@ -1,0 +1,27 @@
+{% extends 'feed/base.html' %}
+{% load static %}
+{% load socialaccount %}
+{% block title %}LogIn{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'feed/login.css' %}">{% endblock %}
+{% block content %}
+<div class="login">
+    <h1>Login</h1>
+
+    <h2>{{ message }}</h2>
+
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-outline-success" type="submit">Login</button>
+    </form>
+    <a href="{% provider_login_url 'google' %}?next=/feed">
+        <button class="btn btn-outline-success btn-google-auth">
+            <img src="{% static 'feed/google-icon.png' %}" width="25px">
+            Login with Google
+        </button>
+    </a>
+    <div class="message">
+    </div>
+</div>
+
+{% endblock %}

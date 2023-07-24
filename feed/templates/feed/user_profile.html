@@ -1,0 +1,79 @@
+{% extends 'feed/base.html' %}
+{% load static %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'feed/user_profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile">
+    <div class="username">
+        <span>{{ user.username }}</span>
+    </div>
+    <img class="profile_image" src="{{ user.profile_image.url }}">
+    <div class="follow">
+        {% if user == request.user %}<span class="edit d-md-flex"><a href="{% url 'feed:user_edit_profile' user.id %}">Edit</a></span><br>{% endif %}
+        <div class="container px-4 text-center">
+          <div class="row gx-5">
+            <div class="col">
+             <a class="link-secondary link-offset-2 link-underline link-underline-opacity-0"
+                href="{% url 'feed:followers' user.id %}">
+                 <div class="p-2">
+                     <span id="followers_count">{{ user.followers.count }}</span>
+                     <br>
+                     <span>followers</span>
+                 </div>
+             </a>
+            </div>
+            <div class="col">
+              <a class="link-secondary link-offset-2 link-underline link-underline-opacity-0"
+                 href="{% url 'feed:following' user.id %}">
+                  <div class="p-2">
+                      <span>{{ user.following.count }}</span>
+                      <br>
+                      <span>following</span>
+                  </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <br>
+        {% if user != request.user %}
+        <div class="d-md-flex"><a class="mx-sm-auto btn btn-outline-secondary"
+                                  onclick="follow({{ user.id }})"
+                                  id="follow">
+            {% if not followed %}
+            Follow
+            {% else %}
+            Unfollow
+            {% endif %}
+        </a></div><br>
+        {% endif %}
+    </div>
+    <div class="user_info">
+        <span class="full_name">Full name: {{ user.first_name }} {{ user.last_name }}</span><br><br>
+        <span class="bio">Bio: {{ user.bio }}</span>
+    </div>
+</div>
+
+<script>
+
+    function follow(user_id) {
+      $.ajax({
+        type: 'GET',
+        url: window.location.origin + '/user/' + user_id + '/follow',
+        success: function(response) {
+          $('#followers_count').text(response.followers);
+          $('#follow').text('Follow');
+          if (response.followed) {
+            $('#follow').text('Unfollow');
+          };
+        }
+      })
+    }
+
+</script>
+
+{% endblock %}

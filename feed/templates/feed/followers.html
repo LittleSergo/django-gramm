@@ -1,0 +1,32 @@
+{% extends 'feed/base.html' %}
+{% load static %}
+
+{% block title %}Followers - {{ user.username }}{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'feed/followers.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="main">
+
+    <h3>
+        Followers
+    </h3>
+
+    <ul class="list-group">
+        {% for follower in user.followers.all %}
+        <li class="list-group-item d-lg-inline">
+            <a class="link-secondary link-offset-2 link-underline link-underline-opacity-0"
+               href="{% url 'feed:user_profile' follower.id %}">
+                <img class="rounded-circle" style="width: 30px;" src="{{ follower.profile_image.url }}">
+                <h5 class="d-lg-inline">{{ follower }}</h5>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
+</div>
+
+{% endblock %}

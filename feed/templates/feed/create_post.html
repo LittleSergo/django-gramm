@@ -1,0 +1,18 @@
+{% extends 'feed/base.html' %}
+{% load static %}
+{% block title %}Create post{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'feed/create_post.css' %}">
+{% endblock %}
+
+{% block content %}
+<form style="width: 600px;" class="mx-sm-auto" method="post" enctype="multipart/form-data">
+    <h1>Create post</h1>
+    {% csrf_token %}
+    <label for="formFileMultiple" class="form-label">Input images.</label>
+    <input name="images" class="form-control" type="file" id="formFileMultiple" multiple>
+    <br>
+    {{ form.as_p }}
+    <input type="submit" value="Create post">
+</form>
+{% endblock %}

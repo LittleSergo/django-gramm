@@ -1,0 +1,22 @@
+.message-window {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: 8fr 1fr;
+}
+
+.message {
+    grid-column: 1;
+    text-align: justify;
+}
+
+.btn-close {
+    grid-column: 2;
+    margin-left: auto;
+    margin-bottom: auto;
+}
+
+.hide {
+    display: none;
+}

@@ -1,0 +1,10 @@
+.pytest_cache/
+__pycache__/
+.idea/
+dist/
+.coverage
+*.db
+local_settings.py
+migrations/
+/node_modules
+.env

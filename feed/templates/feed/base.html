@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% block head %}{% endblock %}
+    <link href="{% static 'feed/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'feed/base.css' %}" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %} - DjangoGramm</title>
+</head>
+<body>
+<nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <a href="{% url 'feed:feed' %}" class="navbar-brand">DJANGO-GRAMM</a>
+      <div class="float-sm-end">
+        {% if request.user.is_authenticated %}
+
+          <form method="post" action="{% url 'feed:logout' %}" class="float-sm-end m-1">
+              {% csrf_token %}
+              <button class="btn btn-outline-success" type="submit">LogOut</button>
+          </form>
+
+          <form action="{% url 'feed:user_profile' request.user.id %}" class="float-sm-end m-1">
+              <button class="btn btn-outline-success" type="submit">
+              <img class="rounded-circle" src="{{ request.user.profile_image.url }}" width="23px">
+              {{ request.user.username }}</button>
+          </form>
+
+          <form action="{% url 'feed:create_post' %}" class="float-sm-end m-1">
+              <button class="btn btn-outline-success" type="submit">Create Post</button>
+          </form>
+
+        {% else %}
+
+        <form action="{% url 'feed:signup' %}" class="float-sm-end m-1">
+          <button class="btn btn-outline-success" type="submit">Sign Up</button>
+        </form>
+        <form action="{% url 'feed:login' %}" class="float-sm-end m-1">
+          <button class="btn btn-outline-success" type="submit">Log In</button>
+        </form>
+
+        {% endif %}
+
+      </div>
+  </div>
+</nav>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="{% static 'feed/bundle.js' %}"></script>
+<script src="{% static 'feed/base.js' %}"></script>
+{% include 'feed/messaging.html' %}
+{% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,192 @@
+{% extends 'feed/base.html' %}
+{% load static %}
+
+{% block title %}Feed{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'feed/feed.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<ul class="nav nav-tabs feed" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active link-secondary" id="feed-tab" data-bs-toggle="tab"
+            data-bs-target="#feed-tab-pane" type="button" role="tab"
+            aria-controls="feed-tab-pane" aria-selected="true">feed</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link link-secondary" id="following-tab" data-bs-toggle="tab"
+            data-bs-target="#following-tab-pane" type="button" role="tab"
+            aria-controls="following-tab-pane" aria-selected="false">following</button>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="feed-tab-pane" role="tabpanel" aria-labelledby="feed-tab" tabindex="0">
+      {% for post in posts %}
+        <div id="feed{{ post.id }}" class="card feed post" style="max-width: 600px;">
+          <div class="card-body">
+            <a class="d-sm-flex link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+               href="{% url 'feed:user_profile' post.owner.id %}">
+            <img class="rounded-circle" src="{{ post.owner.profile_image.url }}" width="40px">
+            <h5 class="card-title m-sm-1">{{ post.owner }}</h5>
+            </a>
+          </div>
+          <div id="carousel{{ post.id }}" class="carousel slide">
+                <div class="carousel-inner">
+                    {% for image in post.image_set.all %}
+                    <div class="carousel-item active">
+                        <img src="{{ image.image.url }}" class="d-block" style="max-width: 600px;">
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button"
+                        data-bs-target="#carousel{{ post.id }}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button"
+                        data-bs-target="#carousel{{ post.id }}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+          </div>
+          <div class="card-body">
+              <span class="badge text-bg-secondary likes_count{{ post.id }}">{{ post.likes.count }}</span>
+              <a onclick="like({{ post.id }})"
+                 class="btn btn-outline-secondary">
+                <img class="liked-post{{ post.id }}"
+                  {% if request.user in post.likes.all %}
+                  src="{% static 'feed/liked.png' %}"
+                  {% else %}
+                  src="{% static 'feed/doesnt_liked.png' %}"
+                  {% endif %}
+                width="25px">
+              </a>
+              <p class="card-text">{{ post.description }}</p>
+              {% for tag in post.tags.all %}
+              <span class="badge bg-secondary">#{{ tag }}</span>
+              {% endfor %}
+          </div>
+            <div class="card-footer">
+              <ul class="list-group comments">
+                <div class="comments{{ post.id }}">
+                  {% for comment in post.comments.all|dictsort:'posted' %}
+                    <li class="list-group-item comment">
+                      <span class="comment-text"><b>{{ comment.owner.username }}</b> {{ comment.text }}</span>
+                      <span class="comment-posted">{{ comment.posted|date:"d.m.y H:i" }}</span>
+                      <span class="comment-like">
+                        <span class="comment-likes-count comment-likes-count{{ comment.id }}">{{ comment.likes.count }}</span>
+                        <a onclick="likeComment({{ comment.id }})">
+                          <img class="comment-like-btn comment-like-btn{{ comment.id }}"
+                               {% if request.user in comment.likes.all %}
+                               src="{% static 'feed/liked.png' %}"
+                               {% else %}
+                               src="{% static 'feed/doesnt_liked.png' %}"
+                               {% endif %}
+                               width="18px">
+                        </a>
+                      </span>
+                    </li>
+                  {% endfor %}
+                </div>
+                <form method="POST" action="{% url 'feed:make_comment' post.id %}" class="send-comment list-group-item comment-input">
+                  <div class="input-group">
+                    {% csrf_token %}
+                    <input type="text" name="feed-comment" class="form-control input-comment{{ post.id }}" placeholder="Your comment..." aria-label="Your comment..." aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="submit">Send</button>
+                  </div>
+                </form>
+              </ul>
+            </div>
+        </div>
+        <br>
+      {% endfor %}
+  </div>
+  <div class="tab-pane fade" id="following-tab-pane" role="tabpanel" aria-labelledby="following-tab" tabindex="0">
+      {% for post in following_posts %}
+        <div id="post{{ post.id }}" class="card feed post" style="max-width: 600px;">
+          <div class="card-body">
+            <a class="d-sm-flex link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+               href="{% url 'feed:user_profile' post.owner.id %}">
+            <img class="rounded-circle" src="{{ post.owner.profile_image.url }}" width="40px">
+            <h5 class="card-title m-sm-1">{{ post.owner }}</h5>
+            </a>
+          </div>
+          <div id="following_carousel{{ post.id }}" class="carousel slide">
+                <div class="carousel-inner">
+                    {% for image in post.image_set.all %}
+                    <div class="carousel-item active">
+                        <img src="{{ image.image.url }}" class="d-block" style="max-width: 600px;">
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button"
+                        data-bs-target="#following_carousel{{ post.id }}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button"
+                        data-bs-target="#following_carousel{{ post.id }}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+          </div>
+          <div class="card-body">
+              <span class="badge text-bg-secondary likes_count{{ post.id }}">{{ post.likes.count }}</span>
+              <a onclick="like({{ post.id }})"
+                class="btn btn-outline-secondary">
+                <img class="liked-post{{ post.id }}"
+                  {% if request.user in post.likes.all %}
+                  src="{% static 'feed/liked.png' %}"
+                  {% else %}
+                  src="{% static 'feed/doesnt_liked.png' %}"
+                  {% endif %}
+                width="25px">
+              </a>
+              <p class="card-text">{{ post.description }}</p>
+              {% for tag in post.tags.all %}
+              <span class="badge bg-secondary">#{{ tag }}</span>
+              {% endfor %}
+
+          </div>
+            <div class="card-footer">
+              <ul class="list-group comments">
+                <div class="comments{{ post.id }}">
+                  {% for comment in post.comments.all|dictsort:'posted' %}
+                    <li class="list-group-item comment">
+                      <span class="comment-text"><b>{{ comment.owner.username }}</b> {{ comment.text }}</span>
+                      <span class="comment-posted">{{ comment.posted|date:"d.m.y H:i" }}</span>
+                      <span class="comment-like">
+                        <span class="comment-likes-count comment-likes-count{{ comment.id }}">{{ comment.likes.count }}</span>
+                        <a onclick="likeComment({{ comment.id }})">
+                          <img class="comment-like-btn comment-like-btn{{ comment.id }}"
+                               {% if request.user in comment.likes.all %}
+                               src="{% static 'feed/liked.png' %}"
+                               {% else %}
+                               src="{% static 'feed/doesnt_liked.png' %}"
+                               {% endif %}
+                               width="18px">
+                        </a>
+                      </span>
+                    </li>
+                  {% endfor %}
+                </div>
+                <form method="POST" action="{% url 'feed:make_comment' post.id %}" class="send-comment list-group-item comment-input">
+                  <div class="input-group">
+                    {% csrf_token %}
+                    <input type="text" name="feed-comment" class="form-control input-comment{{ post.id }}" placeholder="Your comment..." aria-label="Your comment..." aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="submit">Send</button>
+                  </div>
+                </form>
+              </ul>
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+  </div>
+</div>
+
+<script src="{% static 'feed/feed.js' %}"></script>
+
+{% endblock %}

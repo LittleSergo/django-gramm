@@ -1,0 +1,14 @@
+{% extends 'feed/base.html' %}
+{% load static %}
+{% block title %}Edit - {{ user.username }}{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'feed/edit.css' %}">{% endblock %}
+
+{% block content %}
+<div class="edit">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+</div>
+{% endblock %}

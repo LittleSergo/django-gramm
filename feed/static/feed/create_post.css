@@ -1,0 +1,11 @@
+input, textarea {
+    display: block;
+    margin-left: 25px;
+    margin-right: 25px;
+    width: 550px !important;
+    margin: auto !important;
+}
+
+.helptext {
+    color: darkgray;
+}
