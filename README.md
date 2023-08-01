@@ -1,48 +1,47 @@
-# Task 11 - Decompose project
+# DjangoGramm
 
-## План роботи:
+DjangoGramm is my pet project. It is a simple django application that repeats the idea of Instagram. 
+Users can sign up, create posts, see posts in feed, like and comment them, and follow each other.
 
-### 1. Створити та налаштувати проект:    -- Виконано
-1. Створити проєкт:    -- Виконано
-2. Налаштувати підключення до БД, та параметр TIME_ZONE, додати
-параметри STATIC_ROOT, MEDIA_URL та MEDIA_ROOT.    -- Виконано
+## Authentication
 
-### 2. Створити та налаштувати додаток 'feed':    -- Виконано
-1. Створити додаток:    -- Виконано
-2. Створити нову кастомну модель 'user',
-додати до моделі параматри 'bio' та 'profle_image':    -- Виконано
-3. Створити директорію media/user/images для збереження зображень
-профілей, та залишити там файл 'default_user.png', для зображення 
-за замовчуванням.    -- Виконано
-4. Зарееструвати модель в адмінці та додати параметр
-"AUTH_USER_MODEL = 'feed.User'" до 'settings.py'.    -- Виконано
-5. Створити форми для реєстрації, 
-логіну(django.contrib.auth.forms.AuthenticationForm)
-та радагування профілю.    -- Виконано
-6. Сторити темплейти, views та urls для сторінок реестрації, 
-підтвердження реестрації, логіну, виходу з аккаунту, особистого 
-профілю та редагування профілю.    -- Виконано
-7. Додати функціонал листування для веріфікації аккаунту:    -- Виконано
-    1) Створити файл tokens.py де буде відбуватися генерація токенів 
-    для посилань.
-    2) Написати функцію яка буде відправляти листи з підтвердженням 
-    реестрації.
-    3) view для реєстрації.
-    4) view для активації аккаунту:
-8. Hалаштувати листування у 'settings.py'.    -- Виконано
-9. Тести    -- Виконано
-10. Створити моделі post, image:    -- Виконано
-11. Генерація фейкових даних.    -- Виконано
-12. Написати форму для створення нових постів.    -- Виконано
-13. Додати темплейти, views та urls для сторінок створення поста, лайків та 
-перегляду всіх постів.    -- Виконано
-14. Тести    -- Виконано
-15. Додати функціонал підписок користувачів:    -- Виконано
-    1) Створити модель Subscription яка буде зберігати реєструвати підписки.
-    2) Додати view та url для реалізації підписки або відписки.
-    3) Додати кнопку підписки та кількість підписників/підписок на сторінці профілю.
-16. Налаштувати зберігання медіа файлів на хмарному сервісі.    -- Виконано
-17. Тести    -- Виконано
-18. "a little nice look"    -- Виконано
-19. Додати можливість писати коментарі до постів та лайкати їх.    -- Виконано
-20. Тести    -- В процесі
+The application provides the authentication with email confirmation. Users must activate their 
+accounts via email verification, or they will not be able to log in. After confirming the e-mail, 
+after which he can freely log in, the user will be redirected to the profile page. 
+
+## Profile page, editing and following
+
+There, users can add a profile picture and edit profile information, and can see who is following 
+it and who the user is following. If user go to another users page, he can follow this profile and 
+unfollow as well.
+
+## Feed
+
+Feed is divided onto 2 sections, first one is the main feed section where all posts are located.
+Second is the following section where user can watch on the posts that following users posted.
+
+## Post
+
+Post is a single unit of feed. Posts consist of image or images, description, likes (users 
+can like posts and unlike as well), tags and comments section.
+
+### Comments
+
+Users can write comments to each post, and like them the same way as posts. At the first view 
+user can see only 3 comments maximum, but he can expand it and see them all, and collapse sa well.
+
+### Creating post
+
+If user is logged in, he can find the 'Create post' button, if he clicks on, he will be redirected
+to the post creation page. There user can choose the photos for new post, or one photo, add description,
+tags and finally create the post.
+
+## Fake data
+
+You can actually add fake data into this app. It's simple just write command in the command line:
+
+```commandline
+python manage.py fake_data
+```
+
+And that command will add two users, with two posts each, where will be two photos.
