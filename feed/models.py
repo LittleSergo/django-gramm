@@ -33,7 +33,7 @@ class Post(models.Model):
                                    blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE,
                               related_name='owner')
-    likes = models.ManyToManyField(User, related_name='liked',
+    likes = models.ManyToManyField(User, related_name='liked_posts',
                                    blank=True)
     tags = TaggableManager(blank=True)
     posted = models.DateTimeField(auto_now_add=True)
@@ -53,6 +53,6 @@ class Comment(models.Model):
     text = models.TextField(max_length=200)
     owner = models.ForeignKey(User, on_delete=models.CASCADE,
                               related_name='comments')
-    likes = models.ManyToManyField(User, related_name='liked',
+    likes = models.ManyToManyField(User, related_name='liked_comments',
                                    blank=True)
     posted = models.DateTimeField(auto_now_add=True)
